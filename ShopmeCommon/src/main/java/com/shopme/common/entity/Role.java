@@ -19,18 +19,17 @@ public class Role {
 	
 	@Column(length = 150, nullable = false)
 	private String description;
-	
-	public Role(){
-		
+
+	public Role() {
 	}
 	
 	public Role(Integer id) {
 		this.id = id;
 	}
-	
+
 	public Role(String name) {
 		this.name = name;
-	}
+	}	
 	
 	public Role(String name, String description) {
 		this.name = name;
@@ -90,5 +89,6 @@ public class Role {
 	public String toString() {
 		return this.name;
 	}
+
 	
 }

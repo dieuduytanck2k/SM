@@ -16,7 +16,7 @@ public class ShopmeUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = userRepo.getUserByEmail(email);
-		if(user != null) {
+		if (user != null) {
 			return new ShopmeUserDetails(user);
 		}
 		

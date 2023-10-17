@@ -2,7 +2,6 @@ package com.shopme.admin.user.export;
 
 import java.awt.Color;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +18,7 @@ import com.lowagie.text.pdf.PdfWriter;
 import com.shopme.admin.AbstractExporter;
 import com.shopme.common.entity.User;
 
-public class UserPDFExporter extends AbstractExporter{
+public class UserPdfExporter extends AbstractExporter {
 
 	public void export(List<User> listUsers, HttpServletResponse response) throws IOException {
 		super.setResponseHeader(response, "application/pdf", ".pdf", "users_");
@@ -33,8 +32,7 @@ public class UserPDFExporter extends AbstractExporter{
 		font.setSize(18);
 		font.setColor(Color.BLUE);
 		
-		Paragraph paragraph = new Paragraph("List of users", font);
-		
+		Paragraph paragraph = new Paragraph("List of User", font);
 		paragraph.setAlignment(Paragraph.ALIGN_CENTER);
 		
 		document.add(paragraph);
@@ -50,6 +48,7 @@ public class UserPDFExporter extends AbstractExporter{
 		document.add(table);
 		
 		document.close();
+		
 	}
 
 	private void writeTableData(PdfPTable table, List<User> listUsers) {
@@ -69,25 +68,25 @@ public class UserPDFExporter extends AbstractExporter{
 		cell.setPadding(5);
 		
 		Font font = FontFactory.getFont(FontFactory.HELVETICA);
-		font.setColor(Color.WHITE);
+		font.setColor(Color.WHITE);		
 		
-		cell.setPhrase(new Phrase("ID", font));
+		cell.setPhrase(new Phrase("ID", font));		
 		table.addCell(cell);
 		
-		cell.setPhrase(new Phrase("E-mail", font));
+		cell.setPhrase(new Phrase("E-mail", font));		
 		table.addCell(cell);
 		
-		cell.setPhrase(new Phrase("First Name", font));
+		cell.setPhrase(new Phrase("First Name", font));		
 		table.addCell(cell);
 		
-		cell.setPhrase(new Phrase("Last Name", font));
+		cell.setPhrase(new Phrase("Last Name", font));		
+		table.addCell(cell);		
+		
+		cell.setPhrase(new Phrase("Roles ", font));		
 		table.addCell(cell);
 		
-		cell.setPhrase(new Phrase("Roles", font));
-		table.addCell(cell);
-		
-		cell.setPhrase(new Phrase("Enabled", font));
-		table.addCell(cell);
+		cell.setPhrase(new Phrase("Enabled", font));		
+		table.addCell(cell);		
 	}
 
 }

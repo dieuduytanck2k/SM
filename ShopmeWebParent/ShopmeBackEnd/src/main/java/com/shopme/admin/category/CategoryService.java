@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.shopme.common.entity.Category;
+import com.shopme.common.exception.CategoryNotFoundException;
 
 @Service
 @Transactional
@@ -42,7 +43,7 @@ public class CategoryService {
 		Page<Category> pageCategories = null;
 		
 		if (keyword != null && !keyword.isEmpty()) {
-			pageCategories = repo.search(keyword, pageable);
+			pageCategories = repo.search(keyword, pageable);	
 		} else {
 			pageCategories = repo.findRootCategories(pageable);
 		}
@@ -63,7 +64,6 @@ public class CategoryService {
 		} else {
 			return listHierarchicalCategories(rootCategories, sortDir);
 		}
-		
 	}
 	
 	private List<Category> listHierarchicalCategories(List<Category> rootCategories, String sortDir) {
@@ -105,6 +105,13 @@ public class CategoryService {
 	}
 	
 	public Category save(Category category) {
+		Category parent = category.getParent();
+		if (parent != null) {
+			String allParentIds = parent.getAllParentIDs() == null ? "-" : parent.getAllParentIDs();
+			allParentIds += String.valueOf(parent.getId()) + "-";
+			category.setAllParentIDs(allParentIds);
+		}
+		
 		return repo.save(category);
 	}
 	

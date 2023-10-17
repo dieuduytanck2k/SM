@@ -12,12 +12,13 @@ import org.supercsv.prefs.CsvPreference;
 import com.shopme.admin.AbstractExporter;
 import com.shopme.common.entity.Category;
 
-public class CategoryCSVExporter extends AbstractExporter {
-	
-	public void export(List<Category> listCategories, HttpServletResponse response) throws IOException {
+public class CategoryCsvExporter extends AbstractExporter {
+	public void export(List<Category> listCategories, HttpServletResponse response) 
+			throws IOException {
 		super.setResponseHeader(response, "text/csv", ".csv", "categories_");
 		
-		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+		ICsvBeanWriter csvWriter = new CsvBeanWriter(response.getWriter(), 
+				CsvPreference.STANDARD_PREFERENCE);
 		
 		String[] csvHeader = {"Category ID", "Category Name"};
 		String[] fieldMapping = {"id", "name"};
@@ -25,7 +26,7 @@ public class CategoryCSVExporter extends AbstractExporter {
 		csvWriter.writeHeader(csvHeader);
 		
 		for (Category category : listCategories) {
-			category.setName(category.getName().replace("--", " "));
+			category.setName(category.getName().replace("--", "  "));
 			csvWriter.write(category, fieldMapping);
 		}
 		

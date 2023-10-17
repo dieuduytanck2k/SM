@@ -12,10 +12,10 @@ public class PasswordEncoderTest {
 		String rawPassword = "nam2020";
 		String encodedPassword = passwordEncoder.encode(rawPassword);
 		
-		//$2a$10$DbFUV3l/lACgIruejbG/yu3h.YWbpdj0vjF7nbehsRa/LOpMZS9py
-		//$2a$10$18MPxEMxEG3rhuxcSCSeJ.JaAw0iiCRZrhfLGHyacsUrsDlG1qh4u
-
-		boolean encode = passwordEncoder.matches(rawPassword, "$2a$10$18MPxEMxEG3rhuxcSCSeJ.JaAw0iiCRZrhfLGHyacsUrsDlG1qh4u");
-		assertThat(encode).isTrue();
+		System.out.println(encodedPassword);
+		
+		boolean matches = passwordEncoder.matches(rawPassword, encodedPassword);
+		
+		assertThat(matches).isTrue();
 	}
 }

@@ -17,7 +17,6 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "brands")
 public class Brand {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -35,27 +34,20 @@ public class Brand {
 			inverseJoinColumns = @JoinColumn(name = "category_id")
 			)
 	private Set<Category> categories = new HashSet<>();
-	
+
 	public Brand() {
+		
 	}
 	
 	public Brand(String name) {
 		this.name = name;
 		this.logo = "brand-logo.png";
 	}
-	
-	public Brand(String name, String logo) {
+
+	public Brand(Integer id, String name) {
+		this.id = id;
 		this.name = name;
-		this.logo = logo;
 	}
-
-	public Brand(String name, String logo, Set<Category> categories) {
-		this.name = name;
-		this.logo = logo;
-		this.categories = categories;
-	}
-
-
 
 	public Integer getId() {
 		return id;
@@ -93,11 +85,11 @@ public class Brand {
 	public String toString() {
 		return "Brand [id=" + id + ", name=" + name + ", categories=" + categories + "]";
 	}
-	
+
 	@Transient
 	public String getLogoPath() {
 		if (this.id == null) return "/images/image-thumbnail.png";
 		
-		return "/brand-logos/" + this.id + "/" + this.logo;
+		return "/brand-logos/" + this.id + "/" + this.logo;		
 	}
 }

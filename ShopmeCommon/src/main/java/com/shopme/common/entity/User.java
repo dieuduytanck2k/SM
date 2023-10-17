@@ -1,7 +1,7 @@
 package com.shopme.common.entity;
 
-import java.beans.Transient;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,11 +14,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "users")
 public class User {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -49,7 +49,6 @@ public class User {
 	private Set<Role> roles = new HashSet<>();
 	
 	public User() {
-		
 	}
 	
 	public User(String email, String password, String firstName, String lastName) {
@@ -58,6 +57,7 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -143,5 +143,18 @@ public class User {
 	@Transient
 	public String getFullName() {
 		return firstName + " " + lastName;
+	}
+	
+	public boolean hasRole(String roleName) {
+		Iterator<Role> iterator = roles.iterator();
+		
+		while (iterator.hasNext()) {
+			Role role = iterator.next();
+			if (role.getName().equals(roleName)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }

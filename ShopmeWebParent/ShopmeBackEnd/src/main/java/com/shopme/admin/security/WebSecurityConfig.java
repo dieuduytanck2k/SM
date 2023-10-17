@@ -26,7 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 	
-	public DaoAuthenticationProvider authenticationProvier() {
+	public DaoAuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService());
 		authProvider.setPasswordEncoder(passwordEncoder());
@@ -34,21 +34,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return authProvider;
 	}
 	
-	
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.authenticationProvider(authenticationProvier());
+		auth.authenticationProvider(authenticationProvider());
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-			.antMatchers("/users/**").hasAuthority("Admin")
+			.antMatchers("/users/**", "/settings/**", "/countries/**", "/states/**").hasAuthority("Admin")
 			.antMatchers("/categories/**", "/brands/**").hasAnyAuthority("Admin", "Editor")
+			
+			.antMatchers("/products/new", "/products/delete/**").hasAnyAuthority("Admin", "Editor")
+			
+			.antMatchers("/products/edit/**", "/products/save", "/products/check_unique")
+				.hasAnyAuthority("Admin", "Editor", "Salesperson")
+				
+			.antMatchers("/products", "/products/", "/products/detail/**", "/products/page/**")
+				.hasAnyAuthority("Admin", "Editor", "Salesperson", "Shipper")
+				
+			.antMatchers("/products/**").hasAnyAuthority("Admin", "Editor")
+			
 			.anyRequest().authenticated()
 			.and()
-			.formLogin()
+			.formLogin()			
 				.loginPage("/login")
 				.usernameParameter("email")
 				.permitAll()
@@ -56,15 +65,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.and()
 				.rememberMe()
 					.key("AbcDefgHijKlmnOpqrs_1234567890")
-					.tokenValiditySeconds(7 * 24 * 60 * 60)
+					.tokenValiditySeconds(7 * 24 * 60 * 60);
 					;
+			
 	}
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// Không lọc các đường dẫn trên để hiển thị trang login có image js webjars
 		web.ignoring().antMatchers("/images/**", "/js/**", "/webjars/**");
 	}
-	
+
 	
 }

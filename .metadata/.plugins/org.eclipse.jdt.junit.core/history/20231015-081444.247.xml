@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="CartItemRepositoryTests.findByCustomerAndProduct" project="ShopmeFrontEnd" tests="1" started="1" failures="0" errors="0" ignored="0">
+  <testsuite name="com.shopme.shoppingcart.CartItemRepositoryTests" time="0.174" displayname="CartItemRepositoryTests" uniqueid="[engine:junit-jupiter]/[class:com.shopme.shoppingcart.CartItemRepositoryTests]">
+    <testcase name="findByCustomerAndProduct" classname="com.shopme.shoppingcart.CartItemRepositoryTests" time="0.174" displayname="findByCustomerAndProduct()" uniqueid="[engine:junit-jupiter]/[class:com.shopme.shoppingcart.CartItemRepositoryTests]/[method:findByCustomerAndProduct()]"/>
+  </testsuite>
+</testrun>

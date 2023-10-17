@@ -11,13 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
 @Entity
 @Table(name = "categories")
 public class Category {
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -33,20 +33,24 @@ public class Category {
 	
 	private boolean enabled;
 	
+	@Column(name = "all_parent_ids", length = 256, nullable = true)
+	private String allParentIDs;
+	
 	@OneToOne
 	@JoinColumn(name = "parent_id")
 	private Category parent;
 	
 	@OneToMany(mappedBy = "parent")
+	@OrderBy("name asc")
 	private Set<Category> children = new HashSet<>();
-	
+
 	public Category() {
 	}
 	
 	public Category(Integer id) {
 		this.id = id;
 	}
-	
+
 	public static Category copyIdAndName(Category category) {
 		Category copyCategory = new Category();
 		copyCategory.setId(category.getId());
@@ -54,7 +58,7 @@ public class Category {
 		
 		return copyCategory;
 	}
-	
+
 	public static Category copyIdAndName(Integer id, String name) {
 		Category copyCategory = new Category();
 		copyCategory.setId(id);
@@ -72,7 +76,7 @@ public class Category {
 		copyCategory.setEnabled(category.isEnabled());
 		copyCategory.setHasChildren(category.getChildren().size() > 0);
 		
-		return copyCategory;
+		return copyCategory;		
 	}
 	
 	public static Category copyFull(Category category, String name) {
@@ -81,13 +85,18 @@ public class Category {
 		
 		return copyCategory;
 	}
-
+	
 	public Category(String name) {
 		this.name = name;
 		this.alias = name;
 		this.image = "default.png";
 	}
 	
+	public Category(String name, Category parent) {
+		this(name);
+		this.parent = parent;
+	}	
+
 	public Category(Integer id, String name, String alias) {
 		super();
 		this.id = id;
@@ -95,11 +104,6 @@ public class Category {
 		this.alias = alias;
 	}
 
-	public Category(String name, Category parent) {
-		this(name);
-		this.parent = parent;
-	}
-	
 	public Integer getId() {
 		return id;
 	}
@@ -166,11 +170,11 @@ public class Category {
 	public boolean isHasChildren() {
 		return hasChildren;
 	}
-	
+
 	public void setHasChildren(boolean hasChildren) {
 		this.hasChildren = hasChildren;
 	}
-	
+
 	@Transient
 	private boolean hasChildren;
 
@@ -178,5 +182,14 @@ public class Category {
 	public String toString() {
 		return this.name;
 	}
+
+	public String getAllParentIDs() {
+		return allParentIDs;
+	}
+
+	public void setAllParentIDs(String allParentIDs) {
+		this.allParentIDs = allParentIDs;
+	}
+	
 	
 }

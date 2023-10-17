@@ -13,18 +13,15 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.Rollback;
 
-import com.shopme.common.entity.Category;
 import com.shopme.common.entity.Role;
 import com.shopme.common.entity.User;
 
 @DataJpaTest(showSql = false)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Rollback(true)
+@Rollback(false)
 public class UserRepositoryTests {
-	
 	@Autowired
 	private UserRepository repo;
 	
@@ -34,10 +31,10 @@ public class UserRepositoryTests {
 	@Test
 	public void testCreateNewUserWithOneRole() {
 		Role roleAdmin = entityManager.find(Role.class, 1);
-		User userTanDD = new User("dieuduytanck2k@gmail.com","tan2023", "Tan", "Duy Dieu");
-		userTanDD.addRole(roleAdmin);
+		User userNamHM = new User("nam@codejava.net", "nam2020", "Nam", "Ha Minh");
+		userNamHM.addRole(roleAdmin);
 		
-		User savedUser = repo.save(userTanDD);
+		User savedUser = repo.save(userNamHM);
 		
 		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
@@ -51,8 +48,9 @@ public class UserRepositoryTests {
 		userRavi.addRole(roleEditor);
 		userRavi.addRole(roleAssistant);
 		
-		User userSaved = repo.save(userRavi);
-		assertThat(userSaved.getId()).isGreaterThan(0);
+		User savedUser = repo.save(userRavi);
+		
+		assertThat(savedUser.getId()).isGreaterThan(0);
 	}
 	
 	@Test
@@ -63,18 +61,18 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testGetUserById() {
-		User userTan = repo.findById(1).get();
-		System.out.println(userTan);
-		assertThat(userTan).isNotNull();
+		User userNam = repo.findById(1).get();
+		System.out.println(userNam);
+		assertThat(userNam).isNotNull();
 	}
 	
 	@Test
 	public void testUpdateUserDetails() {
-		User userTan = repo.findById(1).get();
-		userTan.setEnabled(true);
-		userTan.setEmail("tanjavafresher@gmail.com");
+		User userNam = repo.findById(1).get();
+		userNam.setEnabled(true);
+		userNam.setEmail("namjavaprogrammer@gmail.com");
 		
-		repo.save(userTan);
+		repo.save(userNam);
 	}
 	
 	@Test
@@ -91,19 +89,22 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testDeleteUser() {
-		repo.deleteById(8);
+		Integer userId = 2;
+		repo.deleteById(userId);
+		
 	}
 	
 	@Test
 	public void testGetUserByEmail() {
-		String email = "tan@gmail.com";
+		String email = "ravi@gmail.com";
 		User user = repo.getUserByEmail(email);
-		System.out.println(email);
+		
+		assertThat(user).isNotNull();
 	}
 	
 	@Test
 	public void testCountById() {
-		Integer id = 10;
+		Integer id = 1;
 		Long countById = repo.countById(id);
 		
 		assertThat(countById).isNotNull().isGreaterThan(0);
@@ -111,9 +112,17 @@ public class UserRepositoryTests {
 	
 	@Test
 	public void testDisableUser() {
-		Integer id = 5;
-		repo.updateEnabledStatus(id, true);
+		Integer id = 1;
+		repo.updateEnabledStatus(id, false);
+		
 	}
+	
+	@Test
+	public void testEnableUser() {
+		Integer id = 3;
+		repo.updateEnabledStatus(id, true);
+		
+	}	
 	
 	@Test
 	public void testListFirstPage() {
@@ -126,12 +135,14 @@ public class UserRepositoryTests {
 		List<User> listUsers = page.getContent();
 		
 		listUsers.forEach(user -> System.out.println(user));
+		
+		assertThat(listUsers.size()).isEqualTo(pageSize);
 	}
 	
 	@Test
 	public void testSearchUsers() {
 		String keyword = "bruce";
-		
+	
 		int pageNumber = 0;
 		int pageSize = 4;
 		
@@ -140,20 +151,8 @@ public class UserRepositoryTests {
 		
 		List<User> listUsers = page.getContent();
 		
-		listUsers.forEach(user -> System.out.println(user));
+		listUsers.forEach(user -> System.out.println(user));	
 		
 		assertThat(listUsers.size()).isGreaterThan(0);
-	}
-	
-	@Test
-	public void update() {
-		Sort sort = Sort.by("first_name");
-		
-		sort = sort.ascending();
-		
-		Pageable pageable = PageRequest.of(1 - 1, 4);
-		Page<User> findAll = repo.findAll(pageable);
-		System.out.println(findAll.getTotalElements());
-		System.out.println(findAll.getTotalPages());
 	}
 }

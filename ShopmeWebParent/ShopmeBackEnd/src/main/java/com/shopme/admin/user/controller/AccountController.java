@@ -20,7 +20,7 @@ import com.shopme.common.entity.User;
 
 @Controller
 public class AccountController {
-	
+
 	@Autowired
 	private UserService service;
 	
@@ -32,14 +32,15 @@ public class AccountController {
 		model.addAttribute("user", user);
 		
 		return "users/account_form";
+		
 	}
 	
 	@PostMapping("/account/update")
-	public String saveUser(User user, RedirectAttributes redirectAttributes,
+	public String saveDetails(User user, RedirectAttributes redirectAttributes,
 			@AuthenticationPrincipal ShopmeUserDetails loggedUser,
 			@RequestParam("image") MultipartFile multipartFile) throws IOException {
 		
-		if(!multipartFile.isEmpty()) {
+		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
 			User savedUser = service.updateAccount(user);
@@ -48,16 +49,17 @@ public class AccountController {
 			
 			FileUploadUtil.cleanDir(uploadDir);
 			FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-		}else {
-			if(user.getPhotos().isEmpty()) user.setPhotos(null);
+			
+		} else {
+			if (user.getPhotos().isEmpty()) user.setPhotos(null);
 			service.updateAccount(user);
 		}
 		
 		loggedUser.setFirstName(user.getFirstName());
 		loggedUser.setLastName(user.getLastName());
 		
-		redirectAttributes.addFlashAttribute("message","Your account details have been updated.");
+		redirectAttributes.addFlashAttribute("message", "Your account details have been updated.");
 		
 		return "redirect:/account";
-	}
+	}	
 }

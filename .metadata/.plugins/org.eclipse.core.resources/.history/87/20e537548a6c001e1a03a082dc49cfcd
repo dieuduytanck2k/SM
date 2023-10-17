@@ -1,0 +1,5 @@
+package com.shopme.category.address;
+
+public class AddressRepositoryTests {
+
+}

@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.13</version> <!-- 2.7.13 -->
+		<version>2.4.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.shopme</groupId>
@@ -15,27 +15,27 @@
 	
 	<name>ShopmeWebParent</name>
 	<description>parent spring web project</description>
-	
+
 	<properties>
-		<java.version>17</java.version> <!-- 17 -->
+		<java.version>15</java.version>
 	</properties>
 	
 	<modules>
 		<module>ShopmeBackEnd</module>
 		<module>ShopmeFrontEnd</module>
-	</modules>	
-	
+	</modules>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -47,16 +47,16 @@
 		</dependency>
 		
 		<dependency>
-			<groupId>com.mysql</groupId>
-			<artifactId>mysql-connector-j</artifactId>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
+				
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -78,14 +78,13 @@
 		<dependency>
 			<groupId>org.webjars</groupId>
 			<artifactId>webjars-locator-core</artifactId>
-		</dependency>
+		</dependency>	
 		
 		<dependency>
 			<groupId>com.shopme</groupId>
 			<artifactId>ShopmeCommon</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		
+			<version>0.0.1-SNAPSHOT</version>		
+		</dependency>	
 	</dependencies>
 
 </project>

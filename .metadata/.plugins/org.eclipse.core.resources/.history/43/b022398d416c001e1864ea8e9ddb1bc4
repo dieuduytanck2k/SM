@@ -1,0 +1,43 @@
+package com.shopme.admin.shippingrate;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shopme.admin.paging.PagingAndSortingHelper;
+import com.shopme.admin.setting.country.CountryRepository;
+import com.shopme.common.entity.Country;
+import com.shopme.common.entity.ShippingRate;
+
+@Service
+@Transactional
+public class ShippingRateService {
+	public static final int RATES_PER_PAGE = 10;
+	
+	@Autowired private ShippingRateRepository shipRepo;
+	@Autowired private CountryRepository countryRepo;
+	
+	public void listByPage(int pageNum, PagingAndSortingHelper helper) {
+		helper.listEntities(pageNum, RATES_PER_PAGE, shipRepo);
+	}
+	
+	public List<Country> listAllCountries() {
+		return countryRepo.findAllByOrderByNameAsc();
+	}
+	
+	public void save(ShippingRate rateInForm) throws ShippingRateAlreadyExistsException {
+		ShippingRate rateInDB = shipRepo.findByCountryAndState(
+				rateInForm.getCountry().getId(), rateInForm.getState());
+		boolean foundExistingRateInNewMode = rateInForm.getId() == null && rateInDB != null;
+		boolean foundDifferentExistingRateInEditMode = rateInForm.getId() != null && rateInDB != null;
+		
+		if (foundExistingRateInNewMode || foundDifferentExistingRateInEditMode) {
+			throw new ShippingRateAlreadyExistsException("There's already a rate for the destination "
+						+ rateInForm.getCountry().getName() + ", " + rateInForm.getState());
+		}
+		shipRepo.save(rateInForm);
+	}
+}
